@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -17,13 +18,18 @@ namespace OTAUpdater
         public MainPage()
         {
             InitializeComponent();
+            activityIndicator.IsVisible = false;
         }
 
         void Handle_Clicked(object sender, System.EventArgs e)
         {
-            Console.WriteLine("starting update...");
+            Debug.WriteLine("starting update...");
+            activityIndicator.IsVisible = true;
+
             _updater.UploadFirmware("aben-master.local", 8266, ReadFirmwareFile(_firmwareResource));
-            Console.WriteLine("firmware installed!");
+
+            Debug.WriteLine("firmware installed!");
+            activityIndicator.IsVisible = false;
         }
 
 

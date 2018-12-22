@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Sockets;
 using System.Reflection;
 
@@ -15,7 +16,7 @@ namespace OTAUpdater.OTA
 
         public void UploadFirmware(string deviceAddress, int devicePort, byte[] firmware)
         {
-            Console.WriteLine($"Size: {firmware.Length}");
+           Debug.WriteLine($"Size: {firmware.Length}");
         }
     }
 }
