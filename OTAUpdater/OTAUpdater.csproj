@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="3.3.0.967583" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="OTA\" />
+    <Folder Include="firmware\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="firmware\firmware_2014.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="firmware\aben_2014.bin" />
+  </ItemGroup>
+</Project>
