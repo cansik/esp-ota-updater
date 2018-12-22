@@ -4,13 +4,15 @@
   </MonoDevelop.Ide.ItemProperties.OTAUpdater.iOS>
   <MonoDevelop.Ide.Workbench ActiveDocument="OTAUpdater/OTA/OTAUpdateClient.cs">
     <Files>
-      <File FileName="OTAUpdater/MainPage.xaml.cs" Line="14" Column="21" />
-      <File FileName="OTAUpdater/MainPage.xaml" Line="7" Column="15" />
+      <File FileName="OTAUpdater/MainPage.xaml.cs" Line="43" Column="25" />
+      <File FileName="OTAUpdater/MainPage.xaml" Line="6" Column="53" />
       <File FileName="OTAUpdater/App.xaml.cs" Line="1" Column="1" />
       <File FileName="../../../../../Library/Frameworks/Mono.framework/External/xbuild/Xamarin/iOS/Xamarin.iOS.Common.targets" Line="646" Column="3" />
       <File FileName="OTAUpdater.iOS/Info.plist" />
-      <File FileName="OTAUpdater/OTA/OTAUpdateClient.cs" Line="11" Column="27" />
+      <File FileName="OTAUpdater/OTA/OTAUpdateClient.cs" Line="51" Column="42" />
       <File FileName="OTAUpdater/App.xaml" Line="5" Column="15" />
+      <File FileName="OTAUpdater/OTA/OTAExtensions.cs" Line="34" Column="1" />
+      <File FileName="OTAUpdater/OTA/OTACommand.cs" Line="9" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.OTAUpdater.Android AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" PreferredExecutionTarget="Android.Android_Accelerated_Oreo" />

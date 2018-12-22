@@ -26,7 +26,7 @@ namespace OTAUpdater
             Debug.WriteLine("starting update...");
             activityIndicator.IsVisible = true;
 
-            _updater.UploadFirmware("aben-master.local", 8266, ReadFirmwareFile(_firmwareResource));
+            _updater.UploadFirmware(8000, "aben-master.local", 8266, "bildspur", ReadFirmwareFile(_firmwareResource));
 
             Debug.WriteLine("firmware installed!");
             activityIndicator.IsVisible = false;
