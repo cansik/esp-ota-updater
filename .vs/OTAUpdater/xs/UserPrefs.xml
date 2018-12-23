@@ -1,23 +1,23 @@
 ﻿<Properties StartupConfiguration="{B99A5C06-53B8-4768-9753-B21E82B611E0}|Default">
-  <MonoDevelop.Ide.ItemProperties.OTAUpdater.iOS automaticSigning="True" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.e5f7cdd320a9f383ea4d971650a9625c1ed98ddb">
+  <MonoDevelop.Ide.ItemProperties.OTAUpdater.iOS automaticSigning="True" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.00AF0BD4-9349-4E0E-9DA7-3B4F6666518E">
     <MonoDevelop.MacDev.AppleDevelopmentTeam DeveloperId="F57CV7E5VM" TeamId="G9K4A7PDPV" />
   </MonoDevelop.Ide.ItemProperties.OTAUpdater.iOS>
   <MonoDevelop.Ide.Workbench ActiveDocument="OTAUpdater/OTA/OTAUpdateClient.cs">
     <Files>
-      <File FileName="OTAUpdater/MainPage.xaml.cs" Line="43" Column="25" />
+      <File FileName="OTAUpdater/MainPage.xaml.cs" Line="30" Column="1" />
       <File FileName="OTAUpdater/MainPage.xaml" Line="6" Column="53" />
       <File FileName="OTAUpdater/App.xaml.cs" Line="1" Column="1" />
       <File FileName="../../../../../Library/Frameworks/Mono.framework/External/xbuild/Xamarin/iOS/Xamarin.iOS.Common.targets" Line="646" Column="3" />
       <File FileName="OTAUpdater.iOS/Info.plist" />
-      <File FileName="OTAUpdater/OTA/OTAUpdateClient.cs" Line="51" Column="42" />
+      <File FileName="OTAUpdater/OTA/OTAUpdateClient.cs" Line="91" Column="42" />
       <File FileName="OTAUpdater/App.xaml" Line="5" Column="15" />
-      <File FileName="OTAUpdater/OTA/OTAExtensions.cs" Line="34" Column="1" />
+      <File FileName="OTAUpdater/OTA/OTAExtensions.cs" Line="42" Column="28" />
       <File FileName="OTAUpdater/OTA/OTACommand.cs" Line="9" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.OTAUpdater.Android AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" PreferredExecutionTarget="Android.Android_Accelerated_Oreo" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.OTAUpdater HideGettingStarted="True" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
