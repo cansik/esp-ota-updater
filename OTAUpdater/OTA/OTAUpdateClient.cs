@@ -99,23 +99,36 @@ namespace OTAUpdater.OTA
             Log($"device connected [{connection.RemoteEndPoint}]");
 
             // send data
-            var chunkSize = 1460;
-            var chunks = firmwareData.ToList().ChunkBy(chunkSize);
-            var chunkCount = 0;
-            foreach(var chunk in chunks)
-            {
-                Log($"sending chunk {chunkCount} of {chunk.Count}...");
-                connection.Send(chunk.ToArray());
+            connection.NoDelay = true;
+            connection.SendTimeout = 60 * 1000;
+            connection.ReceiveTimeout = 60 * 1000;
 
-                // receive transfer answer
+            var chunkSize = 1460;
+            var chunks = firmwareData.ToList().ChunkBy(chunkSize).Select(e => e.ToArray()).ToList();
+            var chunkCount = 0;
+            var transmitOK = false;
+            foreach (var chunk in chunks)
+            {
+                Log($"sending chunk {chunkCount} of {chunks.Count}...");
+                var sent = connection.Send(chunk);
+
+                // receive transfer answe
                 var transferAnswer = connection.ReceiveBuffer(remoteEndPoint, 32).DecodeUTF8().Clean();
-                if(transferAnswer != $"{chunkSize}")
-                {
-                    Log($"transfer failed! [{transferAnswer}]");
-                    return;
-                }
+                transmitOK = transferAnswer.Contains("O");
+
+                chunkCount++;
             }
 
+            // check if transfer is finished
+            Log("waiting for transfer completed..", false);
+            while (!transmitOK)
+            {
+                var transferAnswer = connection.ReceiveBuffer(remoteEndPoint, 32).DecodeUTF8().Clean();
+                transmitOK = transferAnswer.Contains("O");
+                Log(".", false);
+            }
+
+            Log("");
             Log("transfer finished!");
 
             // close sockets
