@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
@@ -28,6 +29,11 @@ namespace OTAUpdater.OTA
             return result.ToString();
         }
 
+        public static string Clean(this string data)
+        {
+            return data.Replace("\0", string.Empty);
+        }
+
         public static byte[] EncodeUTF8(this string data)
         {
             return Encoding.UTF8.GetBytes(data);
@@ -38,10 +44,11 @@ namespace OTAUpdater.OTA
             return Encoding.UTF8.GetString(data);
         }
 
-        public static byte[] ReceiveBuffer(this Socket socket, int bufferSize)
+        public static byte[] ReceiveBuffer(this Socket socket, EndPoint endPoint, int bufferSize)
         {
             var buffer = new byte[bufferSize];
-            socket.Receive(buffer);
+            //socket.Receive(buffer);
+            socket.ReceiveFrom(buffer, ref endPoint);
             return buffer;
         }
 

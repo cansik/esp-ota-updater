@@ -16,6 +16,8 @@ namespace OTAUpdater.OTA
         {
             _dataSocket.ReceiveTimeout = 10 * 1000;
             _commandSocket.ReceiveTimeout = 10 * 1000;
+
+            _dataSocket.NoDelay = true;
         }
 
         void Log(string message, bool newLine = true)
@@ -44,15 +46,17 @@ namespace OTAUpdater.OTA
             _dataSocket.Listen(1);
 
             // sending invitation to device
-            Log("sending invitation...");
-            var inviteMessage = $"{OTACommand.FLASH} {localPort} {firmwareData.Length} {firmwareData.MD5Hash()}\n";
-            Log($"message: \"{inviteMessage.Trim()}\"");
-            var remoteIP = Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault();
+            var inviteMessage = $"{(int)OTACommand.FLASH} {localPort} {firmwareData.Length} {firmwareData.MD5Hash()}\n";
+            Log($"invite message: \"{inviteMessage.Trim()}\"");
+            var remoteIP = Dns.GetHostAddresses(remoteAddress).FirstOrDefault();
+            Log($"remote ip: {remoteIP}");
             var remoteEndPoint = new IPEndPoint(remoteIP, remotePort);
+
+            Log("sending invitation...");
             _commandSocket.SendTo(inviteMessage.EncodeUTF8(), remoteEndPoint);
 
             // reading response
-            var inviteAnswer = _commandSocket.ReceiveBuffer(128).DecodeUTF8();
+            var inviteAnswer = _commandSocket.ReceiveBuffer(remoteEndPoint, 128).DecodeUTF8().Clean(); ;
             Log($"invite answer: {inviteAnswer}");
 
             // check response
@@ -73,13 +77,13 @@ namespace OTAUpdater.OTA
 
             var resultText = $"{passwordHash}:{nonce}:{conce}";
             var resultHash = resultText.EncodeUTF8().MD5Hash();
-            var authMessage = $"{OTACommand.AUTH} {conce} {resultHash}\n";
+            var authMessage = $"{(int)OTACommand.AUTH} {conce} {resultHash}\n";
 
             _commandSocket.SendTo(authMessage.EncodeUTF8(), remoteEndPoint);
 
             // read auth result
-            var authAnswer = _commandSocket.ReceiveBuffer(32).DecodeUTF8();
-            Log($"auth answer: {inviteAnswer}");
+            var authAnswer = _commandSocket.ReceiveBuffer(remoteEndPoint, 32).DecodeUTF8().Clean();
+            Log($"auth answer: {authAnswer}");
 
             if (authAnswer != "OK")
             {
@@ -95,7 +99,8 @@ namespace OTAUpdater.OTA
             Log($"device connected [{connection.RemoteEndPoint}]");
 
             // send data
-            var chunks = firmwareData.ToList().ChunkBy(1460);
+            var chunkSize = 1460;
+            var chunks = firmwareData.ToList().ChunkBy(chunkSize);
             var chunkCount = 0;
             foreach(var chunk in chunks)
             {
@@ -103,8 +108,8 @@ namespace OTAUpdater.OTA
                 connection.Send(chunk.ToArray());
 
                 // receive transfer answer
-                var transferAnswer = _commandSocket.ReceiveBuffer(32).DecodeUTF8();
-                if(!transferAnswer.Contains("O"))
+                var transferAnswer = connection.ReceiveBuffer(remoteEndPoint, 32).DecodeUTF8().Clean();
+                if(transferAnswer != $"{chunkSize}")
                 {
                     Log($"transfer failed! [{transferAnswer}]");
                     return;

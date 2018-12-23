@@ -1,6 +1,7 @@
 ﻿using System;
 namespace OTAUpdater.OTA
 {
+    [Flags]
     public enum OTACommand
     {
         FLASH = 0,
