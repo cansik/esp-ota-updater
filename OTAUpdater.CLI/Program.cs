@@ -14,7 +14,7 @@ namespace OTAUpdater.CLI
             new MainClass().Run();
         }
 
-        private readonly string _firmwareResource = "firmware/aben_2014.bin";
+        private readonly string _firmwareResource = "firmware/aben_2015.bin";
         private readonly OTAUpdateClient _updater = new OTAUpdateClient();
 
         public void Run()
