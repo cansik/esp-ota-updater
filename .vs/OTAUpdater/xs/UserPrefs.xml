@@ -2,18 +2,18 @@
   <MonoDevelop.Ide.ItemProperties.OTAUpdater.iOS automaticSigning="True" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.00AF0BD4-9349-4E0E-9DA7-3B4F6666518E">
     <MonoDevelop.MacDev.AppleDevelopmentTeam DeveloperId="F57CV7E5VM" TeamId="G9K4A7PDPV" />
   </MonoDevelop.Ide.ItemProperties.OTAUpdater.iOS>
-  <MonoDevelop.Ide.Workbench ActiveDocument="OTAUpdater/OTA/OTAExtensions.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="OTAUpdater/OTA/OTAUpdateClient.cs">
     <Files>
       <File FileName="OTAUpdater/MainPage.xaml.cs" Line="30" Column="1" />
       <File FileName="OTAUpdater/MainPage.xaml" Line="6" Column="53" />
       <File FileName="OTAUpdater/App.xaml.cs" Line="1" Column="1" />
       <File FileName="../../../../../Library/Frameworks/Mono.framework/External/xbuild/Xamarin/iOS/Xamarin.iOS.Common.targets" Line="646" Column="3" />
       <File FileName="OTAUpdater.iOS/Info.plist" />
-      <File FileName="OTAUpdater/OTA/OTAUpdateClient.cs" Line="17" Column="52" />
+      <File FileName="OTAUpdater/OTA/OTAUpdateClient.cs" Line="60" Column="51" />
       <File FileName="OTAUpdater/App.xaml" Line="5" Column="15" />
-      <File FileName="OTAUpdater/OTA/OTAExtensions.cs" Line="45" Column="47" />
-      <File FileName="OTAUpdater/OTA/OTACommand.cs" Line="9" Column="6" />
-      <File FileName="OTAUpdater.CLI/Program.cs" Line="27" Column="28" />
+      <File FileName="OTAUpdater/OTA/OTAExtensions.cs" Line="51" Column="1" />
+      <File FileName="OTAUpdater/OTA/OTACommand.cs" Line="12" Column="1" />
+      <File FileName="OTAUpdater.CLI/Program.cs" Line="19" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.OTAUpdater.CLI PreferredExecutionTarget="MonoDevelop.Default" />
