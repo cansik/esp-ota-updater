@@ -47,7 +47,8 @@ namespace OTAUpdater.OTA
             Log("sending invitation...");
             var inviteMessage = $"{OTACommand.FLASH} {localPort} {firmwareData.Length} {firmwareData.ToHex(false)}\n";
             Log($"message: \"{inviteMessage.Trim()}\"");
-            var remoteEndPoint = new IPEndPoint(IPAddress.Parse(remoteAddress), remotePort);
+            var remoteIP = Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault();
+            var remoteEndPoint = new IPEndPoint(remoteIP, remotePort);
             _commandSocket.SendTo(inviteMessage.EncodeUTF8(), remoteEndPoint);
 
             // reading response
@@ -112,7 +113,7 @@ namespace OTAUpdater.OTA
 
             Log("transfer finished!");
 
-            // close socket
+            // close sockets
             connection.Close();
             _dataSocket.Close();
         }

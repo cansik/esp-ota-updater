@@ -20,6 +20,8 @@
     <None Remove="firmware\firmware_2014.bin" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="firmware\aben_2014.bin" />
+    <EmbeddedResource Include="firmware\aben_2014.bin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
