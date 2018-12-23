@@ -13,7 +13,7 @@
       <File FileName="OTAUpdater/App.xaml" Line="5" Column="15" />
       <File FileName="OTAUpdater/OTA/OTAExtensions.cs" Line="46" Column="10" />
       <File FileName="OTAUpdater/OTA/OTACommand.cs" Line="9" Column="6" />
-      <File FileName="OTAUpdater.CLI/Program.cs" Line="9" Column="33" />
+      <File FileName="OTAUpdater.CLI/Program.cs" Line="27" Column="30" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.OTAUpdater.CLI FirstBuild="True" PreferredExecutionTarget="MonoDevelop.Default" />

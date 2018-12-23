@@ -45,7 +45,7 @@ namespace OTAUpdater.OTA
 
             // sending invitation to device
             Log("sending invitation...");
-            var inviteMessage = $"{OTACommand.FLASH} {localPort} {firmwareData.Length} {firmwareData.ToHex(false)}\n";
+            var inviteMessage = $"{OTACommand.FLASH} {localPort} {firmwareData.Length} {firmwareData.MD5Hash()}\n";
             Log($"message: \"{inviteMessage.Trim()}\"");
             var remoteIP = Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault();
             var remoteEndPoint = new IPEndPoint(remoteIP, remotePort);
@@ -66,13 +66,13 @@ namespace OTAUpdater.OTA
             Log("prepare authentication...");
             var nonce = inviteAnswer.Split(" ".ToCharArray())[1];
             var fileName = "firmware.bin";
-            var conceText = $"{fileName}{firmwareData.Length}{firmwareData.ToHex(false)}{remoteAddress}";
+            var conceText = $"{fileName}{firmwareData.Length}{firmwareData.MD5Hash()}{remoteAddress}";
 
-            var conce = conceText.EncodeUTF8().ToHex(false);
-            var passwordHash = password.EncodeUTF8().ToHex(false);
+            var conce = conceText.EncodeUTF8().MD5Hash();
+            var passwordHash = password.EncodeUTF8().MD5Hash();
 
             var resultText = $"{passwordHash}:{nonce}:{conce}";
-            var resultHash = resultText.EncodeUTF8().ToHex(false);
+            var resultHash = resultText.EncodeUTF8().MD5Hash();
             var authMessage = $"{OTACommand.AUTH} {conce} {resultHash}\n";
 
             _commandSocket.SendTo(authMessage.EncodeUTF8(), remoteEndPoint);
