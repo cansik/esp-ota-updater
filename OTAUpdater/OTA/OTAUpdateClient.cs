@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -24,12 +25,12 @@ namespace OTAUpdater.OTA
                 Debug.Write(Environment.NewLine);
         }
 
-        public void UploadFirmware(int localPort, string remoteAddress, int remotePort, string password, byte[] firmware)
+        public void UploadFirmware(int localPort, string remoteAddress, int remotePort, string password, byte[] firmwareData)
         {
             // read local ip address
             Log("reading local ip address...", false);
             var localAddress = Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault();
-            if(localAddress == null)
+            if (localAddress == null)
             {
                 Log("could not be retrieved!");
                 return;
@@ -44,7 +45,7 @@ namespace OTAUpdater.OTA
 
             // sending invitation to device
             Log("sending invitation...");
-            var inviteMessage = $"{OTACommand.FLASH} {localPort} {firmware.Length} {firmware.ToHex(false)}\n";
+            var inviteMessage = $"{OTACommand.FLASH} {localPort} {firmwareData.Length} {firmwareData.ToHex(false)}\n";
             Log($"message: \"{inviteMessage.Trim()}\"");
             var remoteEndPoint = new IPEndPoint(IPAddress.Parse(remoteAddress), remotePort);
             _commandSocket.SendTo(inviteMessage.EncodeUTF8(), remoteEndPoint);
@@ -54,7 +55,7 @@ namespace OTAUpdater.OTA
             Log($"invite answer: {inviteAnswer}");
 
             // check response
-            if(!inviteAnswer.StartsWith("AUTH", StringComparison.Ordinal))
+            if (!inviteAnswer.StartsWith("AUTH", StringComparison.Ordinal))
             {
                 Log("wrong answer!");
                 return;
@@ -64,7 +65,7 @@ namespace OTAUpdater.OTA
             Log("prepare authentication...");
             var nonce = inviteAnswer.Split(" ".ToCharArray())[1];
             var fileName = "firmware.bin";
-            var conceText = $"{fileName}{firmware.Length}{firmware.ToHex(false)}{remoteAddress}";
+            var conceText = $"{fileName}{firmwareData.Length}{firmwareData.ToHex(false)}{remoteAddress}";
 
             var conce = conceText.EncodeUTF8().ToHex(false);
             var passwordHash = password.EncodeUTF8().ToHex(false);
@@ -79,7 +80,7 @@ namespace OTAUpdater.OTA
             var authAnswer = _commandSocket.ReceiveBuffer(32).DecodeUTF8();
             Log($"auth answer: {inviteAnswer}");
 
-            if(authAnswer != "OK")
+            if (authAnswer != "OK")
             {
                 Log("authentication failed!");
                 return;
@@ -93,9 +94,26 @@ namespace OTAUpdater.OTA
             Log($"device connected [{connection.RemoteEndPoint}]");
 
             // send data
+            var chunks = firmwareData.ToList().ChunkBy(1460);
+            var chunkCount = 0;
+            foreach(var chunk in chunks)
+            {
+                Log($"sending chunk {chunkCount} of {chunk.Count}...");
+                connection.Send(chunk.ToArray());
 
+                // receive transfer answer
+                var transferAnswer = _commandSocket.ReceiveBuffer(32).DecodeUTF8();
+                if(!transferAnswer.Contains("O"))
+                {
+                    Log($"transfer failed! [{transferAnswer}]");
+                    return;
+                }
+            }
 
-            // close sockets
+            Log("transfer finished!");
+
+            // close socket
+            connection.Close();
             _dataSocket.Close();
         }
     }
