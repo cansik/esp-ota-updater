@@ -47,7 +47,6 @@ namespace OTAUpdater.OTA
         public static byte[] ReceiveBuffer(this Socket socket, EndPoint endPoint, int bufferSize)
         {
             var buffer = new byte[bufferSize];
-            //socket.Receive(buffer);
             socket.ReceiveFrom(buffer, ref endPoint);
             return buffer;
         }
