@@ -2,9 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:OTAUpdater" x:Class="OTAUpdater.MainPage">
     <StackLayout>
         <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
-        <Label Text="OTA ESP32 Updater" />
-        <ActivityIndicator x:Name="activityIndicator" />
-        <Button Text="Update" Clicked="Handle_Clicked" />
+            <Label Text="OTA ESP32 Updater" FontSize="Large" />
+            <Button Text="Update" Clicked="Handle_Clicked" />
+            <ActivityIndicator x:Name="activityIndicator" />
+            <Label x:Name="statusLabel" Text="-" FontSize="Micro" LineBreakMode="WordWrap"/>
         </StackLayout>
     </StackLayout>
 </ContentPage>

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Xamarin.Forms;
 
 namespace OTAUpdater.OTA
 {
@@ -11,6 +12,8 @@ namespace OTAUpdater.OTA
     {
         private readonly Socket _dataSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private readonly Socket _commandSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+        public event EventHandler<string> MessageLogged;
 
         public OTAUpdateClient()
         {
@@ -22,32 +25,29 @@ namespace OTAUpdater.OTA
 
         void Log(string message, bool newLine = true)
         {
-            Debug.Write(message);
+            var msg = message;
             if (newLine)
-                Debug.Write(Environment.NewLine);
+                msg += Environment.NewLine;
+            MessageLogged(this, msg);
         }
 
-        public void UploadFirmware(int localPort, string remoteAddress, int remotePort, string password, byte[] firmwareData)
+        public void UploadFirmware(string remoteAddress, int remotePort, string password, byte[] firmwareData, int localPort = 0)
         {
-            // read local ip address
-            Log("reading local ip address...", false);
-            var localAddress = Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault();
-            if (localAddress == null)
-            {
-                Log("could not be retrieved!");
-                return;
-            }
+            var localAddress = IPAddress.Parse(DependencyService.Get<IIPAddressManager>().GetIPAddress());
             Log($"{localAddress}");
 
             // create response socket
             Log("starting response socket...");
             var localEndpoint = new IPEndPoint(localAddress, localPort);
-            _dataSocket.Bind(localEndpoint);
+             _dataSocket.Bind(localEndpoint);
             _dataSocket.Listen(1);
 
+            var ep = _dataSocket.LocalEndPoint as IPEndPoint;
+            Log($"bound to {ep}");
+
             // sending invitation to device
-            var inviteMessage = $"{(int)OTACommand.FLASH} {localPort} {firmwareData.Length} {firmwareData.MD5Hash()}\n";
-            Log($"invite message: \"{inviteMessage.Trim()}\"");
+            var inviteMessage = $"{(int)OTACommand.FLASH} {ep.Port} {firmwareData.Length} {firmwareData.MD5Hash()}\n";
+            //Log($"invite message: \"{inviteMessage.Trim()}\"");
             var remoteIP = Dns.GetHostAddresses(remoteAddress).FirstOrDefault();
             Log($"remote ip: {remoteIP}");
             var remoteEndPoint = new IPEndPoint(remoteIP, remotePort);

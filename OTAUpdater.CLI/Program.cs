@@ -24,7 +24,11 @@ namespace OTAUpdater.CLI
             // read resource
             var data = File.ReadAllBytes(_firmwareResource);
 
-            _updater.UploadFirmware(8032, "aben-master.local", 8266, "bildspur", data);
+            _updater.MessageLogged += (object sender, string e) =>
+            {
+                Debug.Write(e);
+            };
+            _updater.UploadFirmware("aben-master.local", 8266, "bildspur", data);
 
             Debug.WriteLine("firmware installed!");
         }
