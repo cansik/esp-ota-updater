@@ -96,7 +96,7 @@ namespace OTAUpdater.OTA
 
             Log("waiting for device...", false);
             var connection = _dataSocket.Accept();
-            Log($"device connected [{connection.RemoteEndPoint}]");
+            Log($"connected [{connection.RemoteEndPoint}]");
 
             // send data
             connection.NoDelay = true;

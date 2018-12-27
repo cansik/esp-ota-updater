@@ -35,7 +35,7 @@ namespace OTAUpdater
             });
         }
 
-        void Handle_Clicked(object sender, System.EventArgs e)
+        void Handle_Clicked(object sender, EventArgs e)
         {
             DisplayLog("starting update...");
             activityIndicator.IsVisible = true;
@@ -47,7 +47,7 @@ namespace OTAUpdater
                     _updater.UploadFirmware("aben-master.local", 8266, "bildspur", ReadFirmwareFile(_firmwareResource));
                     DisplayLog("firmware installed!");
                 }
-                catch(Exception ex)
+                 catch(Exception ex)
                 {
                     DisplayLog($"E: {ex.Message}");
                 }
